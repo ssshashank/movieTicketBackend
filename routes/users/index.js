@@ -11,14 +11,14 @@ const express=require("express");
 const app=express();
 const router=express.Router();
 
-// const getRouter=require("./get");
+const getRouter=require("./get");
 const postRouter=require("./post");
 /* const updateRouter=require("./update");
 const deleteRouter=require("./delete"); */
 
 
 
-// router.use("/get",getRouter);
+router.use("/get",getRouter);
 router.use("/post",postRouter);
 /* 
 router.use("/update",updateRouter);
