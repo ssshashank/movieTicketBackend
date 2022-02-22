@@ -15,9 +15,11 @@ const port=process.env.PORT
 
     /* ================ Configuring UTILITY PACKAGES START  =================*/
     
-    const BASIC_UTILS = require("./utils/basicUtils.js");
-    const DB_UTILS=require("./utils/dbUtils");
-    
+const BASIC_UTILS = require("./utils/basicUtils.js");
+const DB_UTILS=require("./utils/dbUtils");
+const index=require("./routes/index")
+const users=require("./routes/users/index");
+
     /* ================ Configuring UTILITY PACKAGES END  =================*/
 
     
@@ -56,8 +58,18 @@ const port=process.env.PORT
     app.use(helmet());
 
     /* ================ Configuring body and Cookie Parser END  =================*/
-
-
+    
+    
+    /* ========================= ROUTES START ==============================*/
+    
+    app.use("/",index)              // INDEX ROUTES
+    app.use("/users",users);        // USERS ROUTES
+    
+    /* ========================= ROUTES END ==============================*/
+    
+    
+    
+    
     /* ================ Connecting with the PORT STARTS  =================*/
 
     const onListening=() =>{

@@ -1,8 +1,8 @@
 require('dotenv').config();
 const mongoose = require("mongoose");
 require("mongoose-long")(mongoose);
-const bcrypt = require('bcryptjs');
 const SchemaTypes = mongoose.Schema.Types;
+const UserAccounts=require("./userAccounts");
 
 const movie=mongoose.Schema({
     movieId:{
@@ -30,3 +30,14 @@ const movie=mongoose.Schema({
 },{
     timestamps: true,
 })
+movie.methods.toJSON=function(){
+    try {
+        const movie=this;
+        const movieObject=movie.toObject()
+        return movieObject
+    } catch (error) {
+        return error
+    }
+}
+
+module.exports=mongoose.model('movies',movies);
