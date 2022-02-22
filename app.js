@@ -14,21 +14,28 @@ const cors = require('cors');
 const port=process.env.PORT
 
     /* ================ Configuring UTILITY PACKAGES START  =================*/
+    
     const BASIC_UTILS = require("./utils/basicUtils.js");
     const DB_UTILS=require("./utils/dbUtils");
+    
     /* ================ Configuring UTILITY PACKAGES END  =================*/
 
-    /* ================ Configuring Database START  =================*/
+    
+    
+/* ================ Configuring Database START  =================*/
     DB_UTILS.dbUtils.dbInit(); 
-    /* ================ Configuring Database END  =================*/
+/* ================ Configuring Database END  =================*/
 
+    
+    
+    
     /* ================ Session Management STARTS  =================*/
 
     const sessionSettings = {
         secret: SHA256(BASIC_UTILS.randomString(20)).toString(),
         resave: false,
         saveUninitialized: true,
-        cookie: { secure: true },
+        cookie: { secure: true,maxAge:180*60*1000 },
         store:MongoStore.create({
             mongoUrl: process.env.DB_CONNECTION_STRING
         })
