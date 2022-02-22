@@ -13,24 +13,13 @@ const mongoose=require("mongoose");
 const cors = require('cors');
 const port=process.env.PORT
 
-const BASIC_UTILS = require("./utils/basicUtils.js");
-
-
+    /* ================ Configuring UTILITY PACKAGES START  =================*/
+    const BASIC_UTILS = require("./utils/basicUtils.js");
+    const DB_UTILS=require("./utils/dbUtils");
+    /* ================ Configuring UTILITY PACKAGES END  =================*/
 
     /* ================ Configuring Database START  =================*/
-    mongoose.connect(process.env.DB_CONNECTION_STRING, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-        }
-    );
-    const dbConnection=mongoose.connection;
-
-        /* ================ Binding connection to event (to get notification of connection )  =================*/
-
-    dbConnection.on('error', console.error.bind(console, 'DB STATUS :: ERROR: [ ❌ ]'));
-    dbConnection.on('connecting', console.info.bind(console, 'DB STATUS :: CONNECTING............. [ 🏃‍♂️ ]'));
-    dbConnection.on('connected', console.info.bind(console, '\t 🏃‍♂️  DB STATUS :: CONNECTED [✔️]'.green));
-
+    DB_UTILS.dbUtils.dbInit(); 
     /* ================ Configuring Database END  =================*/
 
     /* ================ Session Management STARTS  =================*/
