@@ -36,7 +36,10 @@ router.post("/addMovie",[
     check("name").notEmpty().withMessage("Movie name is required.").trim(),
     check("genre").notEmpty().withMessage("Movie genre is required.").trim(),
     check("imageUrl").notEmpty().withMessage("Movie imageUrl is required.").trim(),
-    check("description").notEmpty().withMessage("Movie description is required.").trim()
+    check("description").notEmpty().withMessage("Movie description is required.").trim(),
+    check("duration").notEmpty().withMessage("Movie duration is required.").trim(),
+    check("releaseYear").notEmpty().withMessage("Movie releaseYear is required.").trim(),
+
 ],async(req,res)=>{
     let responseCode,responseMessage,responseData;
     const userId=res.locals.user.userId;
@@ -58,7 +61,9 @@ router.post("/addMovie",[
                         "name":req.body.name,
                         "genre":req.body.genre,
                         "imageUrl":req.body.imageUrl,
-                        "description":req.body.description
+                        "description":req.body.description,
+                        "releaseYear":req.body.releaseYear,
+                        "duration":req.body.duration
                     }
                     let addMovieResponse=await DB_UTILS.movieDBUtils.saveMovieInDatabase(movie,movieData)
                     responseCode=HTTPStatusCode.CREATED;

@@ -96,7 +96,6 @@ router.post("/signup", [
                 "name":req.body.name,
                 "role":req.body.role===UserRole.ADMIN ?UserRole.ADMIN:UserRole.USER
             }
-            console.log("signupData---",signupData)
             let dbResponse=await DB_UTILS.dbUtils.findByEmailOrUserName(req.body.email,req.body.username)   // CHECK USER ALREADY EXIST
             if(!dbResponse){
                 let signupData={

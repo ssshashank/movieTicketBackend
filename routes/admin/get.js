@@ -57,4 +57,60 @@ router.get("/getAllMovie",[
     }
 )
 
+router.get("/getMovie/:movieId",[
+    auth.userAuth.isLoggedIn,
+    auth.userRole.getRole(UserRole.ADMIN),
+    ],async (req,res)=>{
+        let responseCode, responseMessage, responseData;
+        let movieId = req.params.movieId;
+        try {
+            let dbResponse=await DB_UTILS.movieDBUtils.findByMovieId(movieId)  //FIND MOVIE BY MOVIE ID
+            if(!dbResponse){
+                responseCode = HTTPStatusCode.FORBIDDEN
+                responseMessage = HTTPStatusCode.FORBIDDEN;
+                responseData = "INVALID PROFILE.";
+            }else{
+                responseCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK;
+                responseData = dbResponse;
+            }
+        } catch (error) {
+            responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+            responseData = error.toString();
+        }finally{
+            return res.status(responseCode).send({ message: responseMessage, data: responseData })
+        }
+    }
+)
+
+router.get("/getMovieName/:movieName",[
+    auth.userAuth.isLoggedIn,
+    auth.userRole.getRole(UserRole.ADMIN),
+    ],async (req,res)=>{
+        let responseCode, responseMessage, responseData;
+        let movieName = req.params.movieName;
+        try {
+            let dbResponse=await DB_UTILS.movieDBUtils.findByMovieName(movieName)  //FIND MOVIE BY MOVIE ID
+            
+            if(!dbResponse){
+                responseCode = HTTPStatusCode.FORBIDDEN
+                responseMessage = HTTPStatusCode.FORBIDDEN;
+                responseData = "INVALID PROFILE.";
+            }else{
+                responseCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK;
+                responseData = dbResponse;
+            }
+        } catch (error) {
+            responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+            responseData = error.toString();
+        }finally{
+            return res.status(responseCode).send({ message: responseMessage, data: responseData })
+        }
+    }
+)
+
+
 module.exports=router;
