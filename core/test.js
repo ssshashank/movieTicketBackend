@@ -19,6 +19,22 @@ const userAuth={
     }
 }
 
+const userRole={
+    getRole:async function(role){
+        return (req,res,next)=>{
+            try {
+                console.log("userROle",req.user)
+                if(req.user.role!==role)
+                    return res.status(400).json({error:"NOT ALLOWED."})
+                next();
+            } catch (error) {
+                return res.status(401).json({error:"PLEASE AUTHENTICATE."})
+            }
+        }
+    }
+}
+
 module.exports={
-    userAuth
+    userAuth,
+    userRole
 }

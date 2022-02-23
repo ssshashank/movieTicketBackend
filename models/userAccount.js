@@ -69,8 +69,10 @@ userAccount.methods.createToken=async function(userResponse){
             name:this.name,
             password:this.password,
             email:this.email,
-            contact:this.contact
+            contact:this.contact,
+            role:this.role
         }
+        console.log("--payload----",payload)
         const token="Bearer "+jwt.sign(
             payload,
             process.env.PRIVATE_TOKEN,

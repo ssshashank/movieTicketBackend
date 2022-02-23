@@ -98,7 +98,6 @@ router.post("/signup", [
             }
             console.log("signupData---",signupData)
             let dbResponse=await DB_UTILS.dbUtils.findByEmailOrUserName(req.body.email,req.body.username)   // CHECK USER ALREADY EXIST
-            console.log("dbResponse-----------",dbResponse)
             if(!dbResponse){
                 let signupData={
                     "email":req.body.email,
@@ -109,7 +108,7 @@ router.post("/signup", [
                     "role":req.body.role===UserRole.ADMIN ?UserRole.ADMIN:UserRole.USER
                 }
                 let signedUpResponse=await DB_UTILS.dbUtils.saveInDatabase(userAccount,signupData);       // ADD USER IN DATABASE
-                const token=await signedUpResponse.createToken();                // CREATE TOKEN
+                const token=await signedUpResponse.createToken();        // CREATE TOKEN
                 signedUpResponse.token=token;
                 responseCode=HTTPStatusCode.CREATED;
                 responseMessage=HTTPStatusCode.CREATED;

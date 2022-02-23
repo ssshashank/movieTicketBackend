@@ -16,7 +16,11 @@ const postRouter=require("./post");
 const updateRouter=require("./update");
 const deleteRouter=require("./delete");
  */
+const getRouter=require("./get")
+const postRouter=require("./post");
 
+router.use("/post",postRouter);
+router.use("/get",getRouter);
 
 /* router.use("/get",getRouter);
 router.use("/post",postRouter); */

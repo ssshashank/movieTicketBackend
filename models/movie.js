@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose = require("mongoose");
 require("mongoose-long")(mongoose);
 const SchemaTypes = mongoose.Schema.Types;
-const UserAccounts=require("./userAccounts");
+const UserAccounts=require("./userAccount");
 
 const movie=mongoose.Schema({
     movieId:{
@@ -12,7 +12,8 @@ const movie=mongoose.Schema({
     name:{
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        unique:true
     },
     genre:{
         type: String,
@@ -21,11 +22,18 @@ const movie=mongoose.Schema({
     },
     imageUrl:{
         type: String,
-        trim: true
+        trim: true,
+        required:true
     },
     description:{
         type: String,
-        trim: true
+        trim: true,
+        required:true
+    },
+    releaseYear:{
+        type:String,
+        trim:true,
+        required:true
     }
 },{
     timestamps: true,
@@ -40,4 +48,4 @@ movie.methods.toJSON=function(){
     }
 }
 
-module.exports=mongoose.model('movies',movies);
+module.exports=mongoose.model('movies',movie);

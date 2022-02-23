@@ -19,6 +19,7 @@ const BASIC_UTILS = require("./utils/basicUtils.js");
 const DB_UTILS=require("./utils/dbUtils");
 const index=require("./routes/index")
 const users=require("./routes/users/index");
+const admin=require("./routes/admin/index");
 
     /* ================ Configuring UTILITY PACKAGES END  =================*/
 
@@ -64,6 +65,7 @@ const users=require("./routes/users/index");
     
     app.use("/",index)              // INDEX ROUTES
     app.use("/users",users);        // USERS ROUTES
+    app.use("/admin",admin)               // ADMIN ROUTES
     
     /* ========================= ROUTES END ==============================*/
     

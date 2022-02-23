@@ -1,6 +1,9 @@
 require('dotenv').config();
 const mongoose=require("mongoose");
 const userAccount=require("../models/userAccount");
+const movie=require("../models/movie");
+
+
 
 const dbUtils={
     dbInit:function(){
@@ -65,6 +68,51 @@ const dbUtils={
     },
 }
 
+const movieDBUtils={
+    saveMovieInDatabase:async function(modelName,dataObject){
+        try {
+            let dbResponse=await modelName.create(dataObject);
+            return dbResponse
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    findByMovieId:async function(id){
+        try {
+            let dbResponse = await movie.findOne(
+                {$or:[
+                    {"_id":id},
+                ],
+            }).exec();
+            return dbResponse
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    findByMovieName:async function(movieName){
+        try {
+            let dbResponse = await movie.findOne(
+                {$or:[
+                    {"name":movieName},
+                ],
+            }).exec();
+            return dbResponse
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    findAllMovie:async function(){
+        try {
+            let dbResponse=await movie.find({}).exec();
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    }
+}
+
 module.exports={
     dbUtils,
+    movieDBUtils
 }
+
