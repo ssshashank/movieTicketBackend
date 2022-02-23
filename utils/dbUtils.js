@@ -66,6 +66,14 @@ const dbUtils={
             return {msg:error,status:"NOT_FOUND"}
         }
     },
+    findAllUsers:async function(){
+        try {
+            let dbResponse=await userAccount.find({}).exec();
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    }
 }
 
 const movieDBUtils={
