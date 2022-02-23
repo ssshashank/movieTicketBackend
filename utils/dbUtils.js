@@ -116,6 +116,23 @@ const movieDBUtils={
         } catch (error) {
             return {msg:error,status:"NOT_FOUND"}
         }
+    },
+    deleteMovieByMovieId:async function(movieId){
+        try {
+            let dbResponse=await movie.findOneAndDelete(
+                {"_id":movieId}).exec()
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    deleteAllMovie:async function(){
+        try {
+            let dbResponse=await movie.remove({}).exec()
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
     }
 }
 
