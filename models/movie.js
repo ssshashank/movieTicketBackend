@@ -34,6 +34,11 @@ const movie=mongoose.Schema({
         type:String,
         trim:true,
         required:true
+    },
+    duration:{
+        type:String,
+        trim:true,
+        required:true
     }
 },{
     timestamps: true,

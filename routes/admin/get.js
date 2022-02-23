@@ -38,22 +38,21 @@ router.get("/getAllMovie",[
         let responseCode,responseMessage,responseData;
         try {
             let dbResponse = await DB_UTILS.movieDBUtils.findAllMovie();  //FIND ALL MOVIE
-            console.log(dbResponse);
-            /* const userData=res.locals.user;
-            if (userData.userId !== userId) {
-                console.log("---here into not authenticated--")
-                responseCode = HTTPStatusCode.NOT_FOUND
-                responseMessage = HTTPStatusCode.NOT_FOUND;
-                responseData = "USER IS NOT AUTHENTICATED.";
+            if(!dbResponse){
+                responseCode = HTTPStatusCode.FORBIDDEN
+                responseMessage = HTTPStatusCode.FORBIDDEN;
+                responseData = "INVALID PROFILE.";
             }else{
-                
-            } */
+                responseCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK;
+                responseData = dbResponse;
+            }
         } catch (error) {
             responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
             responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
             responseData = error.toString();
         }finally{
-            // return res.status(responseCode).send({ message: responseMessage, data: responseData })
+            return res.status(responseCode).send({ message: responseMessage, data: responseData })
         }
     }
 )
