@@ -58,7 +58,32 @@ router.get("/getAllUser", [
         }
     })
 
-
+router.get("/getAllTheatre", [
+        auth.userAuth.isLoggedIn,
+        auth.userRole.getRole(UserRole.ADMIN),
+    ],
+        async (req, res) => {
+            let responseCode, responseMessage, responseData;
+            try {
+                let dbResponse = await DB_UTILS.theatreDBUtils.findAllTheatre();  //FIND ALL THEATRE
+                if (!dbResponse) {
+                    responseCode = HTTPStatusCode.FORBIDDEN
+                    responseMessage = HTTPStatusCode.FORBIDDEN;
+                    responseData = "INVALID PROFILE.";
+                } else {
+                    responseCode = HTTPStatusCode.OK
+                    responseMessage = HTTPStatusCode.OK;
+                    responseData = dbResponse;
+                }
+            } catch (error) {
+                responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+                responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+                responseData = error.toString();
+            } finally {
+                return res.status(responseCode).send({ message: responseMessage, data: responseData })
+            }
+        }
+)
 
 router.get("/getAllMovie", [
     auth.userAuth.isLoggedIn,
@@ -114,6 +139,33 @@ router.get("/getMovie/:movieId", [
 }
 )
 
+router.get("/getTheatre/:theatreId", [
+    auth.userAuth.isLoggedIn,
+    auth.userRole.getRole(UserRole.ADMIN),
+], async (req, res) => {
+    let responseCode, responseMessage, responseData;
+    let theatreId = req.params.theatreId;
+    try {
+        let dbResponse = await DB_UTILS.theatreDBUtils.findByTheatreId(theatreId)  //FIND MOVIE BY THEATRE ID
+        if (!dbResponse) {
+            responseCode = HTTPStatusCode.FORBIDDEN
+            responseMessage = HTTPStatusCode.FORBIDDEN;
+            responseData = "INVALID MOVIE ID.";
+        } else {
+            responseCode = HTTPStatusCode.OK
+            responseMessage = HTTPStatusCode.OK;
+            responseData = dbResponse;
+        }
+    } catch (error) {
+        responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+        responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+        responseData = error.toString();
+    } finally {
+        return res.status(responseCode).send({ message: responseMessage, data: responseData })
+    }
+}
+)
+
 router.get("/getMovieName/:movieName", [
     auth.userAuth.isLoggedIn,
     auth.userRole.getRole(UserRole.ADMIN),
@@ -121,7 +173,7 @@ router.get("/getMovieName/:movieName", [
     let responseCode, responseMessage, responseData;
     let movieName = req.params.movieName;
     try {
-        let dbResponse = await DB_UTILS.movieDBUtils.findByMovieName(movieName)  //FIND MOVIE BY MOVIE ID
+        let dbResponse = await DB_UTILS.movieDBUtils.findByMovieName(movieName)  //FIND MOVIE BY MOVIE NAME
 
         if (!dbResponse) {
             responseCode = HTTPStatusCode.FORBIDDEN
@@ -142,5 +194,32 @@ router.get("/getMovieName/:movieName", [
 }
 )
 
+router.get("/getTheatreName/:theatreName", [
+    auth.userAuth.isLoggedIn,
+    auth.userRole.getRole(UserRole.ADMIN),
+], async (req, res) => {
+    let responseCode, responseMessage, responseData;
+    let theatreName = req.params.theatreName;
+    try {
+        let dbResponse = await DB_UTILS.theatreDBUtils.findByTheatreName(theatreName)  //FIND MOVIE BY MOVIE NAME
+        
+        if (!dbResponse) {
+            responseCode = HTTPStatusCode.FORBIDDEN
+            responseMessage = HTTPStatusCode.FORBIDDEN;
+            responseData = "THEATRE NAME NOT FOUND.";
+        } else {
+            responseCode = HTTPStatusCode.OK
+            responseMessage = HTTPStatusCode.OK;
+            responseData = dbResponse;
+        }
+    } catch (error) {
+        responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+        responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+        responseData = error.toString();
+    } finally {
+        return res.status(responseCode).send({ message: responseMessage, data: responseData })
+    }
+}
+)
 
 module.exports = router;

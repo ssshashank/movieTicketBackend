@@ -164,6 +164,55 @@ const theatreDBUtils={
             return {msg:error,status:"NOT_FOUND"}
         }
     },
+    findAllTheatre:async function(){
+        try {
+            let dbResponse=await theatre.find({}).exec();
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    findByTheatreId:async function(id){
+        try {
+            let dbResponse = await theatre.findOne(
+                {$or:[
+                    {"_id":id},
+                ],
+            }).exec();
+            return dbResponse
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    findByTheatreName:async function(theatreName){
+        try {
+            let dbResponse = await theatre.find(
+                {$or:[
+                    {"name":theatreName},
+                ],
+            }).exec();
+            return dbResponse
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    deleteTheatreByTheatreId:async function(theatreId){
+        try {
+            let dbResponse=await theatre.findOneAndDelete(
+                {"_id":theatreId}).exec()
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    deleteAllTheatre:async function(){
+        try {
+            let dbResponse=await theatre.remove({}).exec()
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
 }
 
 module.exports={
