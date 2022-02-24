@@ -59,7 +59,7 @@ router.get("/getAllUser", [
     })
 
 
-    
+
 router.get("/getAllMovie", [
     auth.userAuth.isLoggedIn,
     auth.userRole.getRole(UserRole.ADMIN),
@@ -98,7 +98,7 @@ router.get("/getMovie/:movieId", [
         if (!dbResponse) {
             responseCode = HTTPStatusCode.FORBIDDEN
             responseMessage = HTTPStatusCode.FORBIDDEN;
-            responseData = "INVALID PROFILE.";
+            responseData = "INVALID MOVIE ID.";
         } else {
             responseCode = HTTPStatusCode.OK
             responseMessage = HTTPStatusCode.OK;
@@ -126,7 +126,7 @@ router.get("/getMovieName/:movieName", [
         if (!dbResponse) {
             responseCode = HTTPStatusCode.FORBIDDEN
             responseMessage = HTTPStatusCode.FORBIDDEN;
-            responseData = "INVALID PROFILE.";
+            responseData = "INVALID MOVIE NAME.";
         } else {
             responseCode = HTTPStatusCode.OK
             responseMessage = HTTPStatusCode.OK;

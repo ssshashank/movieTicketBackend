@@ -23,9 +23,8 @@ const userRole={
     getRole:function(role){
         return async (req,res,next)=>{
             try {
-                // console.log("userROle",res.locals.user,"role---",role)
                 if(res.locals.user.role!==role.toString())
-                    return res.status(400).json({error:"NOT ALLOWED."})
+                    return res.status(400).json({error:"SORRY! ONLY ADMIN CAN ACCESS THIS."})
                 next();
             } catch (error) {
                 return res.status(401).json({error:"PLEASE AUTHENTICATE."})

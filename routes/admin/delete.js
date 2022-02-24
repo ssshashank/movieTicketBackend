@@ -72,7 +72,7 @@ router.delete("/deleteMovie/:movieId", [
             if (!deleteDBResponse) {
                 responseCode = HTTPStatusCode.FORBIDDEN;
                 responseMessage = HTTPStatusCode.FORBIDDEN
-                responseData = "INVALID PROFILE"
+                responseData = "INVALID MOVIE ID"
             } else {
                 responseCode = HTTPStatusCode.OK
                 responseMessage = HTTPStatusCode.OK

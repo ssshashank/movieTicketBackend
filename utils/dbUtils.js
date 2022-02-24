@@ -133,7 +133,26 @@ const movieDBUtils={
         } catch (error) {
             return {msg:error,status:"NOT_FOUND"}
         }
-    }
+    },
+    updateMovieByMovieId:async function(movieId){
+        try {
+            let dbResponse=await movie.findOneAndUpdate(
+                {"_id":movieId},{
+                new: true
+            }).exec()
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    saveMovie:async function(movieObject){
+        try {
+            let dbResponse=await movieObject.save()
+            return dbResponse
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
 }
 
 module.exports={
