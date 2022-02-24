@@ -55,6 +55,31 @@ router.delete("/deleteAllMovie",[
         }
 });
 
+router.delete("/deleteAllTheatre",[
+    auth.userAuth.isLoggedIn,
+    auth.userRole.getRole(UserRole.ADMIN),
+    ],async(req,res)=>{
+        let responseCode, responseMessage, responseData;
+        try {
+            let dbResponse = await DB_UTILS.theatreDBUtils.deleteAllTheatre();  //DELETE ALL THEATRE
+            if (!dbResponse) {
+                responseCode = HTTPStatusCode.FORBIDDEN
+                responseMessage = HTTPStatusCode.FORBIDDEN;
+                responseData = "INVALID PROFILE.";
+            } else {
+                responseCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK;
+                responseData = dbResponse;
+            }
+        } catch (error) {
+            responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+            responseData = error.toString();
+        } finally {
+            return res.status(responseCode).send({ message: responseMessage, data: responseData })
+        }
+});
+
 router.delete("/deleteMovie/:movieId", [
     auth.userAuth.isLoggedIn,
     auth.userRole.getRole(UserRole.ADMIN)
@@ -73,6 +98,39 @@ router.delete("/deleteMovie/:movieId", [
                 responseCode = HTTPStatusCode.FORBIDDEN;
                 responseMessage = HTTPStatusCode.FORBIDDEN
                 responseData = "INVALID MOVIE ID"
+            } else {
+                responseCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK
+                responseData = deleteDBResponse
+            }
+        }
+    } catch (error) {
+        responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+        responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+        responseData = error.toString();
+    } finally {
+        return res.status(responseCode).send({ message: responseMessage, data: responseData })
+    }
+})
+
+router.delete("/deleteTheatre/:theatreId", [
+    auth.userAuth.isLoggedIn,
+    auth.userRole.getRole(UserRole.ADMIN)
+], async (req, res) => {
+    let responseCode, responseMessage, responseData;
+    let theatreId = req.params.theatreId;
+    try {
+        let findMovieByIdResponse = await DB_UTILS.theatreDBUtils.findByTheatreId(theatreId);
+        if (!findMovieByIdResponse) {
+            responseCode = HTTPStatusCode.NOT_FOUND
+            responseMessage = HTTPStatusCode.NOT_FOUND
+            responseData = "THEATRE NOT FOUND"
+        } else {
+            let deleteDBResponse = await DB_UTILS.theatreDBUtils.deleteTheatreByTheatreId(theatreId)
+            if (!deleteDBResponse) {
+                responseCode = HTTPStatusCode.FORBIDDEN;
+                responseMessage = HTTPStatusCode.FORBIDDEN
+                responseData = "INVALID THEATRE ID"
             } else {
                 responseCode = HTTPStatusCode.OK
                 responseMessage = HTTPStatusCode.OK
