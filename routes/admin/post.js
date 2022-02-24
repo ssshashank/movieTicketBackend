@@ -39,7 +39,6 @@ router.post("/addMovie",[
     check("description").notEmpty().withMessage("Movie description is required.").trim(),
     check("duration").notEmpty().withMessage("Movie duration is required.").trim(),
     check("releaseYear").notEmpty().withMessage("Movie releaseYear is required.").trim(),
-
 ],async(req,res)=>{
     let responseCode,responseMessage,responseData;
     const userId=res.locals.user.userId;
@@ -83,6 +82,50 @@ router.post("/addMovie",[
     }finally{
         return res.status(responseCode ).send({message:responseMessage,data:responseData})
     }
+})
+
+router.post("/addTheatre",[
+    auth.userAuth.isLoggedIn,
+    auth.userRole.getRole(UserRole.ADMIN),
+    ],async(req,res)=>{
+        let responseCode,responseMessage,responseData;
+        const userId=res.locals.user.userId;
+        try {
+            const errors=validationResult(req);
+            if(!errors.isEmpty()){
+                responseCode=HTTPStatusCode.BAD_REQUEST;
+                responseData=errors;
+                responseMessage=HTTPStatusCode.BAD_REQUEST;
+            }else{
+                if(!userId){
+                    responseCode=HTTPStatusCode.FORBIDDEN;
+                    responseData="USER IS NOT AUTHENTICATED.";
+                    responseMessage=HTTPStatusCode.FORBIDDEN
+                }else{
+                    let theatreData={
+                        "name":req.body.name,
+                        "area":req.body.area,
+                        "rating":req.body.rating,
+                        "totalSeats":req.body.totalSeats,
+                        "seatsFilled":req.body.seatsFilled,
+                        "movieName":req.body.movieName,
+                        "timing":req.body.timing
+                    }
+                    
+                    let addTheatreResponse=await DB_UTILS.theatreDBUtils.saveTheatreInDatabase(theatreData)
+                
+                    responseCode=HTTPStatusCode.CREATED;
+                    responseMessage=HTTPStatusCode.CREATED;
+                    responseData=addTheatreResponse
+                }
+            }
+        } catch (error) {
+            responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+        responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+        responseData = error.toString();
+        }finally{
+            return res.status(responseCode ).send({message:responseMessage,data:responseData})
+        }
 })
 
 module.exports=router;

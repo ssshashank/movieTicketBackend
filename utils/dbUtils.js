@@ -2,7 +2,7 @@ require('dotenv').config();
 const mongoose=require("mongoose");
 const userAccount=require("../models/userAccount");
 const movie=require("../models/movie");
-
+const theatre=require("../models/theatre");
 
 
 const dbUtils={
@@ -155,8 +155,20 @@ const movieDBUtils={
     },
 }
 
+const theatreDBUtils={
+    saveTheatreInDatabase:async function(data){
+        try {
+            let dbResponse=await theatre.create(data);
+            return dbResponse
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+}
+
 module.exports={
     dbUtils,
-    movieDBUtils
+    movieDBUtils,
+    theatreDBUtils
 }
 
