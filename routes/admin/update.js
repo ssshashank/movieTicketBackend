@@ -77,4 +77,47 @@ router.put("/updateMovie/:movieId", [
     }
 })
 
+
+router.put("/updateTheatre/:theatreId", [
+    auth.userAuth.isLoggedIn,
+    auth.userRole.getRole(UserRole.ADMIN),
+], async (req, res) => {
+    let responseCode, responseMessage, responseData;
+    let theatreId = req.params.theatreId;
+    try {
+        let findTheatreByTheatreId = await DB_UTILS.theatreDBUtils.findByTheatreId(theatreId);
+
+        if (!findTheatreByTheatreId) {
+            responseCode = HTTPStatusCode.NOT_FOUND
+            responseMessage = HTTPStatusCode.NOT_FOUND
+            responseData = "MOVIE ID NOT FOUND"
+        } else {
+            let getTheatreDetails = await DB_UTILS.theatreDBUtils.updateTheatreByTheatreId(theatreId)  // UPDATE MOVIE BY MOVIE ID
+            if (getTheatreDetails) {
+                getTheatreDetails.name = req.body.name;
+                getTheatreDetails.genre = req.body.genre;
+                getTheatreDetails.imageUrl = req.body.imageUrl;
+                getTheatreDetails.description = req.body.description;
+                getTheatreDetails.duration = req.body.duration;
+                getTheatreDetails.releaseYear = req.body.releaseYear;
+                const updatedTheatreResponse = await DB_UTILS.theatreDBUtils.saveTheatre(getTheatreDetails)
+                responseCode = HTTPStatusCode.OK
+                responseData = updatedTheatreResponse;
+                responseMessage = HTTPStatusCode.OK
+            } else {
+                responseCode = HTTPStatusCode.NOT_FOUND;
+                responseData = "PRODUCT ID NOT FOUND.";
+                responseMessage = HTTPStatusCode.NOT_FOUND
+            }
+        }
+    } catch (error) {
+        responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+        responseData = error.toString();
+        responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR
+    } finally {
+        return res.status(responseCode).send({ message: responseMessage, data: responseData })
+    }
+})
+
+
 module.exports = router

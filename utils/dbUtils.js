@@ -213,6 +213,25 @@ const theatreDBUtils={
             return {msg:error,status:"NOT_FOUND"}
         }
     },
+    updateTheatreByTheatreId:async function(theatreId){
+        try {
+            let dbResponse=await theatre.findOneAndUpdate(
+                {"_id":theatreId},{
+                new: true
+            }).exec()
+            return dbResponse;
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
+    saveTheatre:async function(theatreObject){
+        try {
+            let dbResponse=await theatreObject.save()
+            return dbResponse
+        } catch (error) {
+            return {msg:error,status:"NOT_FOUND"}
+        }
+    },
 }
 
 module.exports={
