@@ -72,12 +72,11 @@ userAccount.methods.createToken=async function(userResponse){
             contact:this.contact,
             role:this.role
         }
-        console.log("--payload----",payload)
         const token="Bearer "+jwt.sign(
             payload,
             process.env.PRIVATE_TOKEN,
             {
-                expiresIn:"2h"
+                expiresIn:"1h"
             }
         )
         return token;

@@ -11,6 +11,7 @@ const userAuth={
                 let profileData=await jwt.verify(token,process.env.PRIVATE_TOKEN);
                 res.locals.token=token;
                 res.locals.user=profileData;
+                console.log("---profile-data--",profileData)
                 next();
             }
         } catch (error) {

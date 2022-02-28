@@ -22,8 +22,60 @@ const userAccount = require("../../models/userAccount");
 
 /* ================ CORE FILES  =================*/
 const auth = require("../../core/users/usersAuth");
+const { UserRole } = require('../../constants/application');
 
 
+
+router.get("/getAllMovies", [
+    auth.userAuth.isLoggedIn,
+],
+    async (req, res) => {
+        let responseCode, responseMessage, responseData;
+        try {
+            let dbResponse = await DB_UTILS.movieDBUtils.findAllMovie();  //FIND ALL MOVIE
+            if (!dbResponse) {
+                responseCode = HTTPStatusCode.FORBIDDEN
+                responseMessage = HTTPStatusCode.FORBIDDEN;
+                responseData = "INVALID PROFILE.";
+            } else {
+                responseCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK;
+                responseData = dbResponse;
+            }
+        } catch (error) {
+            responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+            responseData = error.toString();
+        } finally {
+            return res.status(responseCode).send({ message: responseMessage, data: responseData })
+        }
+    }
+)
+router.get("/getAllTheatre", [
+    auth.userAuth.isLoggedIn,
+],
+    async (req, res) => {
+        let responseCode, responseMessage, responseData;
+        try {
+            let dbResponse = await DB_UTILS.theatreDBUtils.findAllTheatre();  //FIND ALL THEATRE
+            if (!dbResponse) {
+                responseCode = HTTPStatusCode.FORBIDDEN
+                responseMessage = HTTPStatusCode.FORBIDDEN;
+                responseData = "INVALID PROFILE.";
+            } else {
+                responseCode = HTTPStatusCode.OK
+                responseMessage = HTTPStatusCode.OK;
+                responseData = dbResponse;
+            }
+        } catch (error) {
+            responseCode = HTTPStatusCode.INTERNAL_SERVER_ERROR
+            responseMessage = HTTPStatusCode.INTERNAL_SERVER_ERROR;
+            responseData = error.toString();
+        } finally {
+            return res.status(responseCode).send({ message: responseMessage, data: responseData })
+        }
+    }
+)
 router.get("/:userId", auth.userAuth.isLoggedIn, async (req, res) => {
     let responseCode, responseMessage, responseData;
     let userId = req.params.userId;
@@ -32,7 +84,7 @@ router.get("/:userId", auth.userAuth.isLoggedIn, async (req, res) => {
         if (userData.userId !== userId) {
             responseCode = HTTPStatusCode.NOT_FOUND
             responseMessage = HTTPStatusCode.NOT_FOUND;
-            responseData = "USER IS NOT AUTHENTICATED.";
+            responseData = "USER IS NOTTT AUTHENTICATED.";
         } else {
             let dbResponse = await DB_UTILS.dbUtils.findByUserId(userId);  //FIND USER BY USERID
             if (!dbResponse) {
@@ -53,5 +105,4 @@ router.get("/:userId", auth.userAuth.isLoggedIn, async (req, res) => {
         return res.status(responseCode).send({ message: responseMessage, data: responseData })
     }
 })
-
 module.exports = router;
